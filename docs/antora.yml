@@ -1,0 +1,5 @@
+name: quarkus-ngrok
+title: Quarkus - Ngrok
+version: dev
+nav:
+  - modules/ROOT/nav.adoc

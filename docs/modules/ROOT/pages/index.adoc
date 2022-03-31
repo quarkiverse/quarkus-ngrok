@@ -1,0 +1,22 @@
+= Quarkus - Ngrok
+:extension-status: preview
+
+Describe what the extension does here.
+
+== Installation
+
+If you want to use this extension, you need to add the `io.quarkiverse.ngrok:quarkus-ngrok` extension first.
+In your `pom.xml` file, add:
+
+[source,xml]
+----
+<dependency>
+    <groupId>io.quarkiverse.ngrok</groupId>
+    <artifactId>quarkus-ngrok</artifactId>
+</dependency>
+----
+
+[[extension-configuration-reference]]
+== Extension Configuration Reference
+
+include::config.adoc[leveloffset=+1, opts=optional]
