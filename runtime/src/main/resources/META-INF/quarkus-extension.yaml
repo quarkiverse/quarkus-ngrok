@@ -1,9 +1,9 @@
 name: Ngrok
-#description: Ngrok ...
+description: "Launch and configure ngrok to connecto the Quarkus application when it starts in dev mode"
 metadata:
-#  keywords:
-#    - ngrok
-#  guide: ...
-#  categories:
-#    - "miscellaneous"
-#  status: "preview"
+  keywords:
+    - ngrok
+    - public
+  categories:
+    - "miscellaneous"
+  status: "preview"
