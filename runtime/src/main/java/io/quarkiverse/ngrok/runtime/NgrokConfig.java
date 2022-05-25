@@ -17,7 +17,7 @@ public class NgrokConfig {
     /**
      * Whether ngrok should be started when Quarkus dev-mode is launched
      */
-    @ConfigItem(defaultValue = "false")
+    @ConfigItem(defaultValue = "true")
     public boolean enabled;
 
     /**
