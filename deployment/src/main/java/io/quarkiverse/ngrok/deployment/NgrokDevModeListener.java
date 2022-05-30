@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +29,12 @@ public class NgrokDevModeListener implements DevModeListener {
     private static final String VERSION_STRING = "4VmDzA7iaHb";
 
     private Process ngrokProcess;
+
+    private static String publicURL = null;
+
+    public static String publicURL() {
+        return publicURL;
+    }
 
     @Override
     public void afterFirstStart(RunningQuarkusApplication application) {
@@ -94,8 +102,9 @@ public class NgrokDevModeListener implements DevModeListener {
             }
             log.info("ngrok is running and its web interface can be accessed at 'http://localhost:" + ngrokPort + "'");
             try {
-                String publicURL = ngrokClient.getPublicURL();
+                publicURL = ngrokClient.getPublicURL();
                 log.info("The application can be accessed publicly over the internet using: '" + publicURL + "'");
+                setDevUIInfo(runner);
             } catch (Exception e) {
                 log.error(e);
             } finally {
@@ -106,6 +115,18 @@ public class NgrokDevModeListener implements DevModeListener {
         ngrokThread.setName("ngrok starter thread");
         ngrokThread.setDaemon(true);
         ngrokThread.start();
+    }
+
+    // needs to be done via reflection as NgrokInfoSupplier is invoked by Quarkus using the runtime classloader
+    private void setDevUIInfo(RunningQuarkusApplication runner) {
+        try {
+            Class<?> ngrokInfoSupplierClass = runner.getClassLoader().loadClass(
+                    "io.quarkiverse.ngrok.runtime.NgrokInfoSupplier");
+            Method setPublicURLMethod = ngrokInfoSupplierClass.getMethod("setPublicURL", String.class);
+            setPublicURLMethod.invoke(null, publicURL);
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.warn("Unable to setup the DevUI with ngrok info");
+        }
     }
 
     private String determineDownloadURL(Optional<String> customURL, OS os, String architecture) {
