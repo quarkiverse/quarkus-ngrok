@@ -53,8 +53,8 @@ public class NgrokDevModeListener implements DevModeListener {
     }
 
     private void startNgrokIfNecessary(RunningQuarkusApplication runner) throws IOException {
-        var arthasEnabledOpt = runner.getConfigValue("quarkus.ngrok.enabled", Boolean.class);
-        if (arthasEnabledOpt.isEmpty() || !arthasEnabledOpt.get()) {
+        var ngrokEnabledOpt = runner.getConfigValue("quarkus.ngrok.enabled", Boolean.class);
+        if (ngrokEnabledOpt.isEmpty() || !ngrokEnabledOpt.get()) {
             log.debugf("ngrok will not be started because 'quarkus.ngrok.enabled' is not set to 'true'");
             return;
         }
