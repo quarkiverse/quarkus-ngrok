@@ -26,10 +26,10 @@ jobs:
   build:
     name: Build on ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-#        os: [windows-latest, macos-latest, ubuntu-latest]
+        #        os: [windows-latest, macos-latest, ubuntu-latest]
         os: [ubuntu-latest]
-    fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
       - name: Prepare git
@@ -45,4 +45,4 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: mvn -B formatter:validate verify --file pom.xml
+        run: mvn -B formatter:validate clean install --file pom.xml
