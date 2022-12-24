@@ -208,6 +208,9 @@ public class NgrokDevModeListener implements DevModeListener {
         List<String> command;
 
         Optional<String> authToken = runner.getConfigValue("quarkus.ngrok.auth-token", String.class);
+        if (authToken.isEmpty()) {
+            log.warn("The 'quarkus.ngrok.auth-token' property is likely required by ngrok");
+        }
         Optional<NgrokConfig.Region> region = runner.getConfigValue("quarkus.ngrok.region", NgrokConfig.Region.class);
         Optional<Integer> ngrokHttpPort = runner.getConfigValue("quarkus.ngrok.port", Integer.class);
         if (authToken.isEmpty() && region.isEmpty() && ngrokHttpPort.isEmpty()) {
