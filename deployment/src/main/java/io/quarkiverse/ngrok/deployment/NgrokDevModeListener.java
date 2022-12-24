@@ -162,7 +162,7 @@ public class NgrokDevModeListener implements DevModeListener {
         if (architecture.equals("x86_32")) {
             return "386";
         }
-        if (architecture.equals("aarch64")) {
+        if (architecture.equals("aarch_64")) {
             return "arm64";
         }
         throw new RuntimeException("Unsupported architecture '" + architecture + "'");
