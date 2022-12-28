@@ -66,7 +66,7 @@ public class NgrokDevModeListener implements DevModeListener {
         }
         var ngrokDir = Paths.get(ngrokDirOpt.get());
         if (!Files.exists(ngrokDir)) {
-            Files.createDirectory(ngrokDir);
+            Files.createDirectories(ngrokDir);
         }
 
         var os = OS.determineOS();
