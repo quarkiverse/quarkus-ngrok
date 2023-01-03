@@ -30,12 +30,6 @@ public class NgrokDevModeListener implements DevModeListener {
 
     private Process ngrokProcess;
 
-    private static String publicURL = null;
-
-    public static String publicURL() {
-        return publicURL;
-    }
-
     @Override
     public void afterFirstStart(RunningQuarkusApplication application) {
         try {
@@ -100,11 +94,12 @@ public class NgrokDevModeListener implements DevModeListener {
                 ngrokClient.close();
                 return;
             }
-            log.info("ngrok is running and its web interface can be accessed at 'http://localhost:" + ngrokPort + "'");
+            String webInterfaceURL = "http://" + ngrokHost + ":" + ngrokPort;
+            log.infof("ngrok is running and its web interface can be accessed at: '%s'", webInterfaceURL);
             try {
-                publicURL = ngrokClient.getPublicURL();
-                log.info("The application can be accessed publicly over the internet using: '" + publicURL + "'");
-                setDevUIInfo(runner);
+                String publicURL = ngrokClient.getPublicURL();
+                log.infof("The application can be accessed publicly over the internet using: '%s'", publicURL);
+                setDevUIInfo(runner, publicURL, webInterfaceURL);
             } catch (Exception e) {
                 log.error(e);
             } finally {
@@ -118,12 +113,15 @@ public class NgrokDevModeListener implements DevModeListener {
     }
 
     // needs to be done via reflection as NgrokInfoSupplier is invoked by Quarkus using the runtime classloader
-    private void setDevUIInfo(RunningQuarkusApplication runner) {
+    private void setDevUIInfo(RunningQuarkusApplication runner, String publicURL, String webInterfaceURL) {
         try {
             Class<?> ngrokInfoSupplierClass = runner.getClassLoader().loadClass(
                     "io.quarkiverse.ngrok.runtime.NgrokInfoSupplier");
             Method setPublicURLMethod = ngrokInfoSupplierClass.getMethod("setPublicURL", String.class);
             setPublicURLMethod.invoke(null, publicURL);
+
+            Method setWebInterfaceURLMethod = ngrokInfoSupplierClass.getMethod("setWebInterfaceURL", String.class);
+            setWebInterfaceURLMethod.invoke(null, webInterfaceURL);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             log.warn("Unable to setup the DevUI with ngrok info");
         }
