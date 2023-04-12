@@ -4,11 +4,14 @@
 
 This Quarkus extension integrates [ngrok](https://ngrok.com/) into Quarkus Dev Mode thus allowing users to expose their application to the public internet while they are still developing it.
 
----
-**NOTE**
+NOTE: The extension has absolutely no impact on the production Quarkus application
 
-The extension has absolutely no impact on the production Quarkus application
----
+## Compatibility
+
+| Quarkus | Quarkus Ngrok |
+|---------|---------------|
+| 2.x     | 1.x           |
+| 3.x     | 2.x           |
 
 ## Usage
 
