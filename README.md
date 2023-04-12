@@ -10,8 +10,8 @@ NOTE: The extension has absolutely no impact on the production Quarkus applicati
 
 | Quarkus | Quarkus Ngrok |
 |---------|---------------|
-| 2.x     | 1.x           |
-| 3.x     | 2.x           |
+| 2.x     | 0.x           |
+| 3.x     | 1.x           |
 
 ## Usage
 
