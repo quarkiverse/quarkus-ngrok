@@ -1,4 +1,4 @@
-package io.quarkiverse.ngrok.runtime;
+package io.quarkiverse.ngrok.runtime.devui;
 
 public interface NgrokInfo {
 
