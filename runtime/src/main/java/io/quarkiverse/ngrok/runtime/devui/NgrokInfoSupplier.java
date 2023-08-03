@@ -1,4 +1,4 @@
-package io.quarkiverse.ngrok.runtime;
+package io.quarkiverse.ngrok.runtime.devui;
 
 import java.util.function.Supplier;
 
