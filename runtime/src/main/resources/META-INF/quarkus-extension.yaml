@@ -4,6 +4,11 @@ metadata:
   keywords:
     - ngrok
     - public
+    - ingress
+    - ssh
   categories:
     - "miscellaneous"
-  status: "preview"
+  config:
+    - "quarkus.ngrok."
+  status: "stable"
+  icon-url: "https://raw.githubusercontent.com/quarkiverse/quarkus-ngrok/main/docs/modules/ROOT/assets/images/ngrok.svg"
