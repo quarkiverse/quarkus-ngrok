@@ -116,14 +116,14 @@ public class NgrokDevModeListener implements DevModeListener {
     private void setDevUIInfo(RunningQuarkusApplication runner, String publicURL, String webInterfaceURL) {
         try {
             Class<?> ngrokInfoSupplierClass = runner.getClassLoader().loadClass(
-                    "io.quarkiverse.ngrok.runtime.NgrokInfoSupplier");
+                    "io.quarkiverse.ngrok.runtime.devui.NgrokInfoSupplier");
             Method setPublicURLMethod = ngrokInfoSupplierClass.getMethod("setPublicURL", String.class);
             setPublicURLMethod.invoke(null, publicURL);
 
             Method setWebInterfaceURLMethod = ngrokInfoSupplierClass.getMethod("setWebInterfaceURL", String.class);
             setWebInterfaceURLMethod.invoke(null, webInterfaceURL);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            log.warn("Unable to setup the DevUI with ngrok info");
+            log.warn("Unable to setup the DevUI with ngrok info", e);
         }
     }
 
