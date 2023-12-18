@@ -26,7 +26,7 @@ public class NgrokDevModeListener implements DevModeListener {
 
     private static final Logger log = Logger.getLogger(NgrokDevModeListener.class);
 
-    private static final String VERSION_STRING = "4VmDzA7iaHb";
+    private static final String VERSION_STRING = "bNyj1mQVY4c";
 
     private Process ngrokProcess;
 
