@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.quarkiverse.ngrok</groupId>
     <artifactId>quarkus-ngrok-parent</artifactId>
-    <version>1.3.0</version>
+    <version>999-SNAPSHOT</version>
   </parent>
   <artifactId>quarkus-ngrok-deployment</artifactId>
   <name>Quarkus - Ngrok - Deployment</name>
