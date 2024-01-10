@@ -215,6 +215,7 @@ public class NgrokDevModeListener implements DevModeListener {
             command = List.of(ngrokBinary.toAbsolutePath().toString(), "http", quarkusHttpPort.toString());
         } else {
             StringBuilder sb = new StringBuilder();
+            sb.append("version: 2").append(System.lineSeparator());
             if (authToken.isPresent()) {
                 sb.append("authtoken: ").append(authToken.get()).append(System.lineSeparator());
             }
@@ -227,7 +228,7 @@ public class NgrokDevModeListener implements DevModeListener {
             try {
                 Path configFile = Files.createTempFile("ngrok", ".yml");
                 Files.writeString(configFile, sb.toString());
-                command = List.of(ngrokBinary.toAbsolutePath().toString(), "http", "-config=" + configFile.toAbsolutePath(),
+                command = List.of(ngrokBinary.toAbsolutePath().toString(), "http", "--config=" + configFile.toAbsolutePath(),
                         quarkusHttpPort.toString());
             } catch (IOException e) {
                 log.warn("Unable to create ngrok configuration file", e);

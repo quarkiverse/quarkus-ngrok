@@ -57,7 +57,7 @@ public class VertxNgrokClient implements NgrokClient {
                 .atMost(Duration.ofSeconds(5));
         JsonArray tunnels = jsonResponse.getJsonArray("tunnels");
         Optional<String> publicURLEntry = tunnels.stream().filter(o -> o instanceof JsonObject).map(o -> (JsonObject) o)
-                .filter(jo -> "http".equals(jo.getString("proto"))).map(jo -> jo.getString("public_url")).findFirst();
+                .filter(jo -> "https".equals(jo.getString("proto"))).map(jo -> jo.getString("public_url")).findFirst();
         if (publicURLEntry.isEmpty()) {
             throw new RuntimeException("Unable to determine public URL");
         }
