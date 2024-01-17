@@ -153,6 +153,20 @@ public class NgrokDevModeListener implements DevModeListener {
         throw new RuntimeException("Unsupported OS '" + os + "'");
     }
 
+    // based on https://ngrok.com/docs/agent/config/#default-locations
+    private Path determineDefaultConfigLocation(OS os) {
+        if (os == OS.LINUX) {
+            return Paths.get(System.getProperty("user.home"), ".config/ngrok/ngrok.yml");
+        }
+        if (os == OS.MAC) {
+            return Paths.get(System.getProperty("user.home"), "Library/Application Support/ngrok/ngrok.yml");
+        }
+        if (os == OS.WINDOWS) {
+            return Paths.get(System.getProperty("user.home"), "AppData/Local/ngrok/ngrok.yml");
+        }
+        throw new RuntimeException("Unsupported OS '" + os + "'");
+    }
+
     private String determineArchString(String architecture) {
         if (architecture.equals("x86_64")) {
             return "amd64";
@@ -228,7 +242,13 @@ public class NgrokDevModeListener implements DevModeListener {
             try {
                 Path configFile = Files.createTempFile("ngrok", ".yml");
                 Files.writeString(configFile, sb.toString());
-                command = List.of(ngrokBinary.toAbsolutePath().toString(), "http", "--config=" + configFile.toAbsolutePath(),
+
+                String configs = configFile.toAbsolutePath().toString();
+                Path defaultConfig = determineDefaultConfigLocation(OS.determineOS());
+                if (Files.exists(defaultConfig)) {
+                    configs += "," + defaultConfig.toAbsolutePath().toString();
+                }
+                command = List.of(ngrokBinary.toAbsolutePath().toString(), "http", "--config=" + configs,
                         quarkusHttpPort.toString());
             } catch (IOException e) {
                 log.warn("Unable to create ngrok configuration file", e);
