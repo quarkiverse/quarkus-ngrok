@@ -1,0 +1,113 @@
+
+:summaryTableId: quarkus-ngrok
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[[quarkus-ngrok_configuration]]link:#quarkus-ngrok_configuration[Configuration property]
+
+h|Type
+h|Default
+
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.enabled]]`link:#quarkus-ngrok_quarkus.ngrok.enabled[quarkus.ngrok.enabled]`
+
+
+[.description]
+--
+Whether ngrok should be started when Quarkus dev-mode is launched
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_NGROK_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_NGROK_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--|boolean 
+|`false`
+
+
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.directory]]`link:#quarkus-ngrok_quarkus.ngrok.directory[quarkus.ngrok.directory]`
+
+
+[.description]
+--
+The directory into which to save the ngrok binary if it doesn't exist
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_NGROK_DIRECTORY+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_NGROK_DIRECTORY+++`
+endif::add-copy-button-to-env-var[]
+--|string 
+|required icon:exclamation-circle[title=Configuration property is required]
+
+
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.download-url]]`link:#quarkus-ngrok_quarkus.ngrok.download-url[quarkus.ngrok.download-url]`
+
+
+[.description]
+--
+Specify a download URL where the ngrok distribution will be obtained from. If not set, the platform default will be used
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_NGROK_DOWNLOAD_URL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_NGROK_DOWNLOAD_URL+++`
+endif::add-copy-button-to-env-var[]
+--|string 
+|
+
+
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.auth-token]]`link:#quarkus-ngrok_quarkus.ngrok.auth-token[quarkus.ngrok.auth-token]`
+
+
+[.description]
+--
+The authentication token used to authenticate this client when it connects to the ngrok.com service
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_NGROK_AUTH_TOKEN+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_NGROK_AUTH_TOKEN+++`
+endif::add-copy-button-to-env-var[]
+--|string 
+|
+
+
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.region]]`link:#quarkus-ngrok_quarkus.ngrok.region[quarkus.ngrok.region]`
+
+
+[.description]
+--
+The region where the ngrok agent will connect to host its tunnels
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_NGROK_REGION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_NGROK_REGION+++`
+endif::add-copy-button-to-env-var[]
+-- a|
+`united-states`, `europe`, `asia-pacific`, `australia`, `south-america`, `japan`, `india` 
+|
+
+
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.port]]`link:#quarkus-ngrok_quarkus.ngrok.port[quarkus.ngrok.port]`
+
+
+[.description]
+--
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_NGROK_PORT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_NGROK_PORT+++`
+endif::add-copy-button-to-env-var[]
+--|int 
+|
+
+|===
