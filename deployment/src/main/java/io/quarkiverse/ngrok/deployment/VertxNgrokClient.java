@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.jboss.logging.Logger;
 
+import io.smallrye.mutiny.unchecked.Unchecked;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
@@ -46,11 +47,11 @@ public class VertxNgrokClient implements NgrokClient {
                 .request(new RequestOptions().setMethod(HttpMethod.GET).setURI("/api/tunnels").addHeader("Content-Type",
                         "application/json"))
                 .onItem().transformToUni(req -> req.send())
-                .onItem().invoke(res -> {
+                .onItem().invoke(Unchecked.consumer(res -> {
                     if (res.statusCode() != 200) {
                         throw new RuntimeException("Invalid HTTP response");
                     }
-                })
+                }))
                 .onItem().transformToUni(HttpClientResponse::body)
                 .onItem().transform(Buffer::toJsonObject)
                 .await()
