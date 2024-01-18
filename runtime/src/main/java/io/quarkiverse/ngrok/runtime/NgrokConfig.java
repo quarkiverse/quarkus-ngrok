@@ -51,6 +51,12 @@ public class NgrokConfig {
      */
     public Optional<Integer> port;
 
+    /**
+     * The domain or hostname to use instead of the one ngrok generates.
+     * See https://ngrok.com/blog-post/free-static-domains-ngrok-users
+     */
+    public Optional<String> domain;
+
     public enum Region {
         United_States("us"),
         Europe("eu"),

@@ -38,3 +38,5 @@ The application can be accessed publicly over the internet using: 'http://4f59-6
 ```
 
 4. Use the `.ngrok-free.app` URL to access the running application from the public internet
+
+5. You can get a stable url by setting `quarkus.ngrok.domain` to a domain you own and have configured in ngrok. Tip: ngrok at current time of writing offer a free domain per user for free. See details at https://ngrok.com/blog-post/free-static-domains-ngrok-users.

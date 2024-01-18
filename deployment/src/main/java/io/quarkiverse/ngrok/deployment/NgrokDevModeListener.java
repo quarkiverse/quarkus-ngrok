@@ -10,6 +10,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -217,7 +218,7 @@ public class NgrokDevModeListener implements DevModeListener {
     private boolean startNgrok(Path ngrokBinary, RunningQuarkusApplication runner) {
         Integer quarkusHttpPort = runner.getConfigValue("quarkus.http.port", Integer.class).orElse(8080);
 
-        List<String> command;
+        List<String> command = new ArrayList<>();
 
         Optional<String> authToken = runner.getConfigValue("quarkus.ngrok.auth-token", String.class);
         if (authToken.isEmpty()) {
@@ -225,9 +226,12 @@ public class NgrokDevModeListener implements DevModeListener {
         }
         Optional<NgrokConfig.Region> region = runner.getConfigValue("quarkus.ngrok.region", NgrokConfig.Region.class);
         Optional<Integer> ngrokHttpPort = runner.getConfigValue("quarkus.ngrok.port", Integer.class);
-        if (authToken.isEmpty() && region.isEmpty() && ngrokHttpPort.isEmpty()) {
-            command = List.of(ngrokBinary.toAbsolutePath().toString(), "http", quarkusHttpPort.toString());
-        } else {
+        Optional<String> ngrokDomain = runner.getConfigValue("quarkus.ngrok.domain", String.class);
+
+        command.add(ngrokBinary.toAbsolutePath().toString());
+        command.add("http");
+
+        if (authToken.isPresent() || region.isPresent() || ngrokHttpPort.isPresent()) {
             StringBuilder sb = new StringBuilder();
             sb.append("version: 2").append(System.lineSeparator());
             if (authToken.isPresent()) {
@@ -248,13 +252,18 @@ public class NgrokDevModeListener implements DevModeListener {
                 if (Files.exists(defaultConfig)) {
                     configs += "," + defaultConfig.toAbsolutePath().toString();
                 }
-                command = List.of(ngrokBinary.toAbsolutePath().toString(), "http", "--config=" + configs,
-                        quarkusHttpPort.toString());
+                command.add("--config=" + configs);
             } catch (IOException e) {
                 log.warn("Unable to create ngrok configuration file", e);
                 return false;
             }
         }
+
+        if (ngrokDomain.isPresent()) {
+            command.add("--domain=" + ngrokDomain.get());
+        }
+
+        command.add(quarkusHttpPort.toString());
 
         if (log.isDebugEnabled()) {
             log.debug("Attempting to start ngrok using: '" + String.join(" ", command) + "'");
