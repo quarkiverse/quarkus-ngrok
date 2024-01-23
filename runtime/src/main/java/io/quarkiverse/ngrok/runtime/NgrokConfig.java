@@ -49,13 +49,22 @@ public class NgrokConfig {
     /**
      * The port where ngrok will be serving the local web interface and api
      */
+    @ConfigItem
     public Optional<Integer> port;
 
     /**
      * The domain or hostname to use instead of the one ngrok generates.
      * See https://ngrok.com/blog-post/free-static-domains-ngrok-users
      */
+    @ConfigItem
     public Optional<String> domain;
+
+    /**
+     * Name of the tunnel to start from ngrok default config instead of Quarkus configuration. Useful to use extended ngrok
+     * configuration.
+     */
+    @ConfigItem
+    public Optional<String> tunnelName;
 
     public enum Region {
         United_States("us"),
