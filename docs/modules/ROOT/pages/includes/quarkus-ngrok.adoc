@@ -101,6 +101,8 @@ a| [[quarkus-ngrok_quarkus.ngrok.port]]`link:#quarkus-ngrok_quarkus.ngrok.port[q
 
 [.description]
 --
+The port where ngrok will be serving the local web interface and api
+
 ifdef::add-copy-button-to-env-var[]
 Environment variable: env_var_with_copy_button:+++QUARKUS_NGROK_PORT+++[]
 endif::add-copy-button-to-env-var[]
@@ -116,11 +118,30 @@ a| [[quarkus-ngrok_quarkus.ngrok.domain]]`link:#quarkus-ngrok_quarkus.ngrok.doma
 
 [.description]
 --
+The domain or hostname to use instead of the one ngrok generates. See https://ngrok.com/blog-post/free-static-domains-ngrok-users
+
 ifdef::add-copy-button-to-env-var[]
 Environment variable: env_var_with_copy_button:+++QUARKUS_NGROK_DOMAIN+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_NGROK_DOMAIN+++`
+endif::add-copy-button-to-env-var[]
+--|string 
+|
+
+
+a| [[quarkus-ngrok_quarkus.ngrok.tunnel-name]]`link:#quarkus-ngrok_quarkus.ngrok.tunnel-name[quarkus.ngrok.tunnel-name]`
+
+
+[.description]
+--
+Name of the tunnel to start from ngrok default config instead of Quarkus configuration. Useful to use extended ngrok configuration.
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_NGROK_TUNNEL_NAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_NGROK_TUNNEL_NAME+++`
 endif::add-copy-button-to-env-var[]
 --|string 
 |

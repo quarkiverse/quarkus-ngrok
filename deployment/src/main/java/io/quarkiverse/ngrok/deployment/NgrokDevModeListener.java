@@ -228,9 +228,9 @@ public class NgrokDevModeListener implements DevModeListener {
         Optional<Integer> ngrokHttpPort = runner.getConfigValue("quarkus.ngrok.port", Integer.class);
         Optional<String> ngrokDomain = runner.getConfigValue("quarkus.ngrok.domain", String.class);
 
-        command.add(ngrokBinary.toAbsolutePath().toString());
-        command.add("http");
+        Optional<String> ngrokTunnel = runner.getConfigValue("quarkus.ngrok.tunnel-name", String.class);
 
+        String configs = null;
         if (authToken.isPresent() || region.isPresent() || ngrokHttpPort.isPresent()) {
             StringBuilder sb = new StringBuilder();
             sb.append("version: 2").append(System.lineSeparator());
@@ -247,23 +247,33 @@ public class NgrokDevModeListener implements DevModeListener {
                 Path configFile = Files.createTempFile("ngrok", ".yml");
                 Files.writeString(configFile, sb.toString());
 
-                String configs = configFile.toAbsolutePath().toString();
+                configs = configFile.toAbsolutePath().toString();
                 Path defaultConfig = determineDefaultConfigLocation(OS.determineOS());
                 if (Files.exists(defaultConfig)) {
-                    configs += "," + defaultConfig.toAbsolutePath().toString();
+                    // last one wins
+                    configs = defaultConfig.toAbsolutePath().toString() + "," + configs;
                 }
-                command.add("--config=" + configs);
             } catch (IOException e) {
                 log.warn("Unable to create ngrok configuration file", e);
                 return false;
             }
         }
 
-        if (ngrokDomain.isPresent()) {
-            command.add("--domain=" + ngrokDomain.get());
+        command.add(ngrokBinary.toAbsolutePath().toString());
+        if (ngrokTunnel.isPresent()) {
+            command.add("start");
+            if (configs != null)
+                command.add("--config=" + configs);
+            command.add(ngrokTunnel.get());
+        } else {
+            command.add("http");
+            if (configs != null)
+                command.add("--config=" + configs);
+            if (ngrokDomain.isPresent()) {
+                command.add("--domain=" + ngrokDomain.get());
+            }
+            command.add(quarkusHttpPort.toString());
         }
-
-        command.add(quarkusHttpPort.toString());
 
         if (log.isDebugEnabled()) {
             log.debug("Attempting to start ngrok using: '" + String.join(" ", command) + "'");
