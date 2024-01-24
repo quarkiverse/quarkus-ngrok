@@ -26,9 +26,9 @@ NOTE: The extension has absolutely no impact on the production Quarkus applicati
 
 ## Usage
 
-1. Add the extension to the application's dependencies `./mvnw quarkus:add-extension -Dextensions="io.quarkiverse.ngrok:quarkus-ngrok"`
+1. Add the extension to the application's dependencies: `quarkus ext add ngrok` or `./mvnw quarkus:add-extension -Dextensions="io.quarkiverse.ngrok:quarkus-ngrok"`
 
-2. Start Quarkus in Dev Mode with the following configuration property `quarkus.ngrok.enabled=true`. It is also advised for users to sign up for a free ngrok account and use the obtained token using `quarkus.ngrok.auth-token=sometoken` 
+2. Get a [ngrok auth token](https://ngrok.com/docs/getting-started/#step-2-connect-your-account) and configure it using ngrok or set it via `quarkus.ngrok.authtoken`
 
 3. A short while after the application has started, you should see something in the application logs like:
 
@@ -37,6 +37,4 @@ ngrok is running and its web interface can be accessed at: 'http://localhost:404
 The application can be accessed publicly over the internet using: 'http://4f59-68-81-186-238.ngrok-free.app'
 ```
 
-4. Use the `.ngrok-free.app` URL to access the running application from the public internet
-
-5. You can get a stable url by setting `quarkus.ngrok.domain` to a domain you own and have configured in ngrok. Tip: ngrok at current time of writing offer a free domain per user for free. See details at https://ngrok.com/blog-post/free-static-domains-ngrok-users.
+For further instructions and tips to run using stable domains and additional config see https://docs.quarkiverse.io/quarkus-ngrok/dev/

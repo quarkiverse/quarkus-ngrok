@@ -10,7 +10,7 @@ h|[[quarkus-ngrok_configuration]]link:#quarkus-ngrok_configuration[Configuration
 h|Type
 h|Default
 
-a| [[quarkus-ngrok_quarkus.ngrok.enabled]]`link:#quarkus-ngrok_quarkus.ngrok.enabled[quarkus.ngrok.enabled]`
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.enabled]]`link:#quarkus-ngrok_quarkus.ngrok.enabled[quarkus.ngrok.enabled]`
 
 
 [.description]
@@ -24,10 +24,10 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_NGROK_ENABLED+++`
 endif::add-copy-button-to-env-var[]
 --|boolean 
-|`true`
+|`false`
 
 
-a| [[quarkus-ngrok_quarkus.ngrok.directory]]`link:#quarkus-ngrok_quarkus.ngrok.directory[quarkus.ngrok.directory]`
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.directory]]`link:#quarkus-ngrok_quarkus.ngrok.directory[quarkus.ngrok.directory]`
 
 
 [.description]
@@ -41,10 +41,10 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_NGROK_DIRECTORY+++`
 endif::add-copy-button-to-env-var[]
 --|string 
-|`${user.home}/.quarkus/ngrok`
+|required icon:exclamation-circle[title=Configuration property is required]
 
 
-a| [[quarkus-ngrok_quarkus.ngrok.download-url]]`link:#quarkus-ngrok_quarkus.ngrok.download-url[quarkus.ngrok.download-url]`
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.download-url]]`link:#quarkus-ngrok_quarkus.ngrok.download-url[quarkus.ngrok.download-url]`
 
 
 [.description]
@@ -61,7 +61,7 @@ endif::add-copy-button-to-env-var[]
 |
 
 
-a| [[quarkus-ngrok_quarkus.ngrok.auth-token]]`link:#quarkus-ngrok_quarkus.ngrok.auth-token[quarkus.ngrok.auth-token]`
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.auth-token]]`link:#quarkus-ngrok_quarkus.ngrok.auth-token[quarkus.ngrok.auth-token]`
 
 
 [.description]
@@ -78,7 +78,7 @@ endif::add-copy-button-to-env-var[]
 |
 
 
-a| [[quarkus-ngrok_quarkus.ngrok.region]]`link:#quarkus-ngrok_quarkus.ngrok.region[quarkus.ngrok.region]`
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.region]]`link:#quarkus-ngrok_quarkus.ngrok.region[quarkus.ngrok.region]`
 
 
 [.description]
@@ -96,7 +96,7 @@ endif::add-copy-button-to-env-var[]
 |
 
 
-a| [[quarkus-ngrok_quarkus.ngrok.port]]`link:#quarkus-ngrok_quarkus.ngrok.port[quarkus.ngrok.port]`
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.port]]`link:#quarkus-ngrok_quarkus.ngrok.port[quarkus.ngrok.port]`
 
 
 [.description]
@@ -113,7 +113,7 @@ endif::add-copy-button-to-env-var[]
 |
 
 
-a| [[quarkus-ngrok_quarkus.ngrok.domain]]`link:#quarkus-ngrok_quarkus.ngrok.domain[quarkus.ngrok.domain]`
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.domain]]`link:#quarkus-ngrok_quarkus.ngrok.domain[quarkus.ngrok.domain]`
 
 
 [.description]
@@ -130,7 +130,7 @@ endif::add-copy-button-to-env-var[]
 |
 
 
-a| [[quarkus-ngrok_quarkus.ngrok.tunnel-name]]`link:#quarkus-ngrok_quarkus.ngrok.tunnel-name[quarkus.ngrok.tunnel-name]`
+a|icon:lock[title=Fixed at build time] [[quarkus-ngrok_quarkus.ngrok.tunnel-name]]`link:#quarkus-ngrok_quarkus.ngrok.tunnel-name[quarkus.ngrok.tunnel-name]`
 
 
 [.description]
