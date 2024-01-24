@@ -22,7 +22,7 @@ In your `pom.xml` file, add:
 
 1. Add the extension to the application's dependencies `./mvnw quarkus:add-extension -Dextensions="io.quarkiverse.ngrok:quarkus-ngrok"`
 
-2. Start Quarkus in Dev Mode with the following configuration property `quarkus.ngrok.enabled=true`. It is also advised for users to sign up for a free ngrok account and use the obtained token using `quarkus.ngrok.auth-token=sometoken` 
+2. Get a [ngrok auth token](https://ngrok.com/docs/getting-started/#step-2-connect-your-account) and configure it using ngrok or set it via `quarkus.ngrok.authtoken`
 
 3. A short while after the application has started, you should see something in the application logs like:
 +
@@ -33,6 +33,40 @@ The application can be accessed publicly over the internet using: 'http://4f59-6
 ----
 +
 4. Use the `.ngrok-free.app` URL to access the running application from the public internet
+
+
+## Use a stable domain/url
+
+You can get a stable url by setting `quarkus.ngrok.domain` to a domain you own and have configured in ngrok. 
+
+Tip: ngrok at current time of writing offer a free domain per user for free. See details at https://ngrok.com/blog-post/free-static-domains-ngrok-users.
+
+## Use ngrok custom configuration 
+
+For further customization of `ngrok`, assign `quarkus.ngrok.tunnel-name` to a named tunnel specified in your https://ngrok.com/docs/agent/config/#default-locations[ngrok configuration file] for your operating system. Quarkus will then utilize that configuration instead.
+
+Example, set this in your `application.properties`:
+
+[source,properties]
+----
+quarkus.ngrok.tunnel-name=${quarkus.application.name}
+----
+
+And lets say your app is named `quarkus-my-app` then in your https://ngrok.com/docs/agent/config/#default-locations[ngrok.yml] file:
+[source,yaml]
+----
+version: 2
+tunnels:
+    quarkus-my-app:
+        proto: http
+        addr: 8080
+        bind_tls: true
+        basic_auth:
+            - "bob:bobpassword"
+        domain: my-app.ngrok.io
+----
+
+Then Quarkus will launch ngrok using `ngrok start quarkus-my-app` and use that specific named tunnel configuration. 
 
 [[extension-configuration-reference]]
 == Extension Configuration Reference

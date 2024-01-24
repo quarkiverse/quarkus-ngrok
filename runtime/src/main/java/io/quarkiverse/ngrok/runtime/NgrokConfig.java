@@ -15,7 +15,7 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 public class NgrokConfig {
 
     /**
-     * Whether ngrok should be started when Quarkus dev-mode is launched
+     * Whether ngrok should be started when Quarkus dev-mode is launched.
      */
     @ConfigItem(defaultValue = "true")
     public boolean enabled;
