@@ -15,22 +15,29 @@
 
 This Quarkus extension integrates [ngrok](https://ngrok.com/) into Quarkus Dev Mode thus allowing users to expose their application to the public internet while they are still developing it.
 
-NOTE: The extension has absolutely no impact on the production Quarkus application
+> [!IMPORTANT]  
+> NOTE: The extension has absolutely no impact on the production Quarkus application
 
-## Compatibility
+## Getting started
 
-| Quarkus | Quarkus Ngrok |
-|---------|---------------|
-| 2.x     | 0.x           |
-| 3.x     | 1.x           |
+Read the full [Ngrok documentation](https://docs.quarkiverse.io/quarkus-ngrok/dev/index.html).
+
+* Create or use an existing Quarkus application
+* Add the Ngrok extension with the [Quarkus CLI](https://quarkus.io/guides/cli-tooling) or Apache Maven:
+
+```bash
+quarkus ext add io.quarkiverse.ngrok:quarkus-ngrok
+```
+
+```bash
+./mvnw quarkus:add-extension -Dextensions="io.quarkiverse.ngrok:quarkus-ngrok"
+```
 
 ## Usage
 
-1. Add the extension to the application's dependencies: `quarkus ext add ngrok` or `./mvnw quarkus:add-extension -Dextensions="io.quarkiverse.ngrok:quarkus-ngrok"`
+1. Get a [ngrok auth token](https://ngrok.com/docs/getting-started/#step-2-connect-your-account) and configure it using ngrok or set it via `quarkus.ngrok.authtoken`
 
-2. Get a [ngrok auth token](https://ngrok.com/docs/getting-started/#step-2-connect-your-account) and configure it using ngrok or set it via `quarkus.ngrok.authtoken`
-
-3. A short while after the application has started, you should see something in the application logs like:
+2. A short while after the application has started, you should see something in the application logs like:
 
 ```bash
 ngrok is running and its web interface can be accessed at: 'http://localhost:4040'
