@@ -1,5 +1,5 @@
 name: Ngrok
-description: "Launch and configure ngrok to connect to the Quarkus application when it starts in dev mode"
+description: "Launch and configure ngrok to proxy this application, making it accessible on the internet"
 metadata:
   keywords:
     - ngrok

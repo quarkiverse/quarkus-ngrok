@@ -1,30 +1,32 @@
-package io.quarkiverse.ngrok.deployment;
+package io.quarkiverse.ngrok.deployment.devui;
 
 import io.quarkiverse.ngrok.runtime.devui.NgrokJsonRPCService;
 import io.quarkus.deployment.IsDevelopment;
+import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.devui.spi.JsonRPCProvidersBuildItem;
 import io.quarkus.devui.spi.page.CardPageBuildItem;
 import io.quarkus.devui.spi.page.Page;
 
-public class NgrokProcessor {
+public class NgrokDevUIProcessor {
 
     @BuildStep(onlyIf = IsDevelopment.class)
-    public CardPageBuildItem devUiCard() {
+    public void devUiCard(BuildProducer<CardPageBuildItem> cardPageBuildItemBuildProducer) {
 
-        CardPageBuildItem cardPageBuildItem = new CardPageBuildItem();
+        CardPageBuildItem card = new CardPageBuildItem();
 
-        cardPageBuildItem.addPage(Page.externalPageBuilder("Public URL")
+        card.addPage(Page.externalPageBuilder("Public URL")
                 .dynamicUrlJsonRPCMethodName("getPublicUrl")
                 .doNotEmbed()
                 .icon("font-awesome-solid:bullhorn"));
 
-        cardPageBuildItem.addPage(Page.externalPageBuilder("Web interface")
+        card.addPage(Page.externalPageBuilder("Web interface")
                 .dynamicUrlJsonRPCMethodName("getWebInterfaceUrl")
                 .doNotEmbed()
                 .icon("font-awesome-solid:globe"));
 
-        return cardPageBuildItem;
+        card.setCustomCard("qwc-ngrok-card.js");
+        cardPageBuildItemBuildProducer.produce(card);
     }
 
     @BuildStep(onlyIf = IsDevelopment.class)
