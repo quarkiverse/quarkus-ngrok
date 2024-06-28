@@ -22,7 +22,7 @@ In your `pom.xml` file, add:
 
 1. Add the extension to the application's dependencies `./mvnw quarkus:add-extension -Dextensions="io.quarkiverse.ngrok:quarkus-ngrok"`
 
-2. Get a https://ngrok.com/docs/getting-started/#step-2-connect-your-account[ngrok auth token] and configure it using ngrok or set it via `quarkus.ngrok.authtoken`
+2. Get a https://ngrok.com/docs/getting-started/#step-2-connect-your-account[ngrok auth token] and configure it using ngrok or set it via `quarkus.ngrok.auth-token`
 
 3. A short while after the application has started, you should see something in the application logs like:
 +
