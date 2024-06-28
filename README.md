@@ -10,7 +10,7 @@
 [![Build](https://github.com/quarkiverse/quarkus-ngrok/actions/workflows/build.yml/badge.svg)](https://github.com/quarkiverse/quarkus-ngrok/actions/workflows/build.yml)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Purpose
@@ -62,6 +62,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://melloware.com"><img src="https://avatars.githubusercontent.com/u/4399574?v=4?s=100" width="100px;" alt="Melloware"/><br /><sub><b>Melloware</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-ngrok/commits?author=melloware" title="Code">💻</a> <a href="#maintenance-melloware" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://www.activi.link"><img src="https://avatars.githubusercontent.com/u/56843747?v=4?s=100" width="100px;" alt="zakhdar"/><br /><sub><b>zakhdar</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-ngrok/commits?author=zakhdar" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://xam.dk"><img src="https://avatars.githubusercontent.com/u/54129?v=4?s=100" width="100px;" alt="Max Rydahl Andersen"/><br /><sub><b>Max Rydahl Andersen</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-ngrok/commits?author=maxandersen" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.phillip-kruger.com"><img src="https://avatars.githubusercontent.com/u/6836179?v=4?s=100" width="100px;" alt="Phillip Krüger"/><br /><sub><b>Phillip Krüger</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-ngrok/commits?author=phillip-kruger" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
