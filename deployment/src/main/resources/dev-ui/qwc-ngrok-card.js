@@ -79,7 +79,8 @@ export class QwcNgrokCard extends LitElement {
                                 streamingLabel="${page.streamingLabel}"
                                 path="${page.id}"
                                 ?embed=${page.embed}
-                                externalUrl="${page.metadata.externalUrl}"
+                                externalUrl="${page.metadata.externalUrl}" 
+                                dynamicUrlMethodName="${page.metadata.dynamicUrlMethodName}"
                                 webcomponent="${page.componentLink}" >
                             </qwc-extension-link>
                         `)}`;
