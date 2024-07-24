@@ -66,6 +66,19 @@ public class NgrokConfig {
     @ConfigItem
     public Optional<String> tunnelName;
 
+    /**
+     * API key for ngrok if you need to perform any API operations such as delete-certificate-management-policy.
+     */
+    @ConfigItem
+    public Optional<String> apiKey;
+
+    /**
+     * Reserved domain unique identifier for revoking certificate upon startup. Example: 'rd_2hrGw0rqFLOm9pcXf4dlbdNfrus'
+     * If this value is not null the certificate will be revoked upon dev service startup.
+     */
+    @ConfigItem
+    public Optional<String> deleteCertificateDomainId;
+
     public enum Region {
         United_States("us"),
         Europe("eu"),

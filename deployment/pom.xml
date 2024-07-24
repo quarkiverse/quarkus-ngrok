@@ -18,6 +18,10 @@
       <artifactId>quarkus-fs-util</artifactId>
     </dependency>
     <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.quarkiverse.ngrok</groupId>
       <artifactId>quarkus-ngrok</artifactId>
       <version>${project.version}</version>

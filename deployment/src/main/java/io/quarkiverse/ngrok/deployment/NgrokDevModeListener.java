@@ -7,6 +7,7 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.logging.Logger;
 
 import io.quarkiverse.ngrok.runtime.NgrokConfig;
@@ -73,11 +76,14 @@ public class NgrokDevModeListener implements DevModeListener {
             Path ngrokBinary = toNgrokBinaryPath(ngrokDir, os);
             if (!Files.exists(ngrokBinary)) {
                 try {
-                    downloadNgrok(downloadURL, ngrokDir, os);
+                    ngrokBinary = downloadNgrok(downloadURL, ngrokDir, os);
                 } catch (IOException e) {
                     log.warn("Unable to download ngrok", e);
                     return;
                 }
+            }
+            if (!deleteCertificatePolicyIfNecessary(ngrokBinary, runner)) {
+                log.debug("Failed to delete certificate policy");
             }
             if (!startNgrok(ngrokBinary, runner)) {
                 return;
@@ -128,12 +134,10 @@ public class NgrokDevModeListener implements DevModeListener {
         }
     }
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private String determineDownloadURL(Optional<String> customURL, OS os, String architecture) {
-        if (customURL.isPresent()) {
-            return customURL.get();
-        }
+        return customURL.orElseGet(() -> createDownloadURL(os, architecture));
 
-        return createDownloadURL(os, architecture);
     }
 
     private String createDownloadURL(OS os, String architecture) {
@@ -142,43 +146,31 @@ public class NgrokDevModeListener implements DevModeListener {
     }
 
     private String determineOSString(OS os) {
-        if (os == OS.LINUX) {
-            return "linux";
-        }
-        if (os == OS.MAC) {
-            return "darwin";
-        }
-        if (os == OS.WINDOWS) {
-            return "windows";
-        }
-        throw new RuntimeException("Unsupported OS '" + os + "'");
+        return switch (os) {
+            case LINUX -> "linux";
+            case MAC -> "darwin";
+            case WINDOWS -> "windows";
+            default -> throw new RuntimeException("Unsupported OS '" + os + "'");
+        };
     }
 
     // based on https://ngrok.com/docs/agent/config/#default-locations
     private Path determineDefaultConfigLocation(OS os) {
-        if (os == OS.LINUX) {
-            return Paths.get(System.getProperty("user.home"), ".config/ngrok/ngrok.yml");
-        }
-        if (os == OS.MAC) {
-            return Paths.get(System.getProperty("user.home"), "Library/Application Support/ngrok/ngrok.yml");
-        }
-        if (os == OS.WINDOWS) {
-            return Paths.get(System.getProperty("user.home"), "AppData/Local/ngrok/ngrok.yml");
-        }
-        throw new RuntimeException("Unsupported OS '" + os + "'");
+        return switch (os) {
+            case LINUX -> Paths.get(System.getProperty("user.home"), ".config/ngrok/ngrok.yml");
+            case MAC -> Paths.get(System.getProperty("user.home"), "Library/Application Support/ngrok/ngrok.yml");
+            case WINDOWS -> Paths.get(System.getProperty("user.home"), "AppData/Local/ngrok/ngrok.yml");
+            default -> throw new RuntimeException("Unsupported OS '" + os + "'");
+        };
     }
 
     private String determineArchString(String architecture) {
-        if (architecture.equals("x86_64")) {
-            return "amd64";
-        }
-        if (architecture.equals("x86_32")) {
-            return "386";
-        }
-        if (architecture.equals("aarch_64")) {
-            return "arm64";
-        }
-        throw new RuntimeException("Unsupported architecture '" + architecture + "'");
+        return switch (architecture) {
+            case "x86_64" -> "amd64";
+            case "x86_32" -> "386";
+            case "aarch_64" -> "arm64";
+            default -> throw new RuntimeException("Unsupported architecture '" + architecture + "'");
+        };
     }
 
     private String determineBinaryName(OS os) {
@@ -215,6 +207,39 @@ public class NgrokDevModeListener implements DevModeListener {
         return ngrokBinary;
     }
 
+    private boolean deleteCertificatePolicyIfNecessary(Path ngrokBinary, RunningQuarkusApplication runner) {
+        Optional<String> apiKey = runner.getConfigValue("quarkus.ngrok.api-key", String.class);
+        Optional<String> domainId = runner.getConfigValue("quarkus.ngrok.delete-certificate-domain-id", String.class);
+        if (apiKey.isEmpty() || domainId.isEmpty()) {
+            return true;
+        }
+
+        String command = String.format("%s api --api-key %s reserved-domains delete-certificate-management-policy %s",
+                ngrokBinary.toAbsolutePath(), apiKey.get(), domainId.get());
+        log.infof("Attempting to delete certificates: '%s'", command);
+
+        try {
+            // Execute the command
+            Process process = Runtime.getRuntime().exec(command);
+            String stderr = IOUtils.toString(process.getErrorStream(), StandardCharsets.UTF_8);
+            String stdout = IOUtils.toString(process.getInputStream(), StandardCharsets.UTF_8);
+            if (StringUtils.isNotBlank(stdout)) {
+                log.info(stdout);
+            }
+            if (StringUtils.isNotBlank(stderr)) {
+                log.error(stderr);
+            }
+
+            // Wait for the process to finish and check the exit value
+            int exitCode = process.waitFor();
+            log.debugf("Delete Certificate Exit Code: %d", exitCode);
+            return exitCode == 0;
+        } catch (IOException | InterruptedException e) {
+            log.warn("Unable to call ngrok api", e);
+            return false;
+        }
+    }
+
     private boolean startNgrok(Path ngrokBinary, RunningQuarkusApplication runner) {
         Integer quarkusHttpPort = runner.getConfigValue("quarkus.http.port", Integer.class).orElse(8080);
 
@@ -227,22 +252,16 @@ public class NgrokDevModeListener implements DevModeListener {
         Optional<NgrokConfig.Region> region = runner.getConfigValue("quarkus.ngrok.region", NgrokConfig.Region.class);
         Optional<Integer> ngrokHttpPort = runner.getConfigValue("quarkus.ngrok.port", Integer.class);
         Optional<String> ngrokDomain = runner.getConfigValue("quarkus.ngrok.domain", String.class);
-
         Optional<String> ngrokTunnel = runner.getConfigValue("quarkus.ngrok.tunnel-name", String.class);
 
         String configs = null;
         if (authToken.isPresent() || region.isPresent() || ngrokHttpPort.isPresent()) {
             StringBuilder sb = new StringBuilder();
             sb.append("version: 2").append(System.lineSeparator());
-            if (authToken.isPresent()) {
-                sb.append("authtoken: ").append(authToken.get()).append(System.lineSeparator());
-            }
-            if (region.isPresent()) {
-                sb.append("region: ").append(region.get().getName()).append(System.lineSeparator());
-            }
-            if (ngrokHttpPort.isPresent()) {
-                sb.append("web_addr: ").append("127.0.0.1:").append(ngrokHttpPort.get()).append(System.lineSeparator());
-            }
+            authToken.ifPresent(s -> sb.append("authtoken: ").append(s).append(System.lineSeparator()));
+            region.ifPresent(value -> sb.append("region: ").append(value.getName()).append(System.lineSeparator()));
+            ngrokHttpPort.ifPresent(
+                    integer -> sb.append("web_addr: ").append("127.0.0.1:").append(integer).append(System.lineSeparator()));
             try {
                 Path configFile = Files.createTempFile("ngrok", ".yml");
                 Files.writeString(configFile, sb.toString());
@@ -251,7 +270,7 @@ public class NgrokDevModeListener implements DevModeListener {
                 Path defaultConfig = determineDefaultConfigLocation(OS.determineOS());
                 if (Files.exists(defaultConfig)) {
                     // last one wins
-                    configs = defaultConfig.toAbsolutePath().toString() + "," + configs;
+                    configs = defaultConfig.toAbsolutePath() + "," + configs;
                 }
             } catch (IOException e) {
                 log.warn("Unable to create ngrok configuration file", e);
@@ -269,15 +288,11 @@ public class NgrokDevModeListener implements DevModeListener {
             command.add("http");
             if (configs != null)
                 command.add("--config=" + configs);
-            if (ngrokDomain.isPresent()) {
-                command.add("--domain=" + ngrokDomain.get());
-            }
+            ngrokDomain.ifPresent(s -> command.add("--domain=" + s));
             command.add(quarkusHttpPort.toString());
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Attempting to start ngrok using: '" + String.join(" ", command) + "'");
-        }
+        log.debugf("Attempting to start ngrok using: '%s'", String.join(" ", command));
         ProcessBuilder processBuilder = new ProcessBuilder(command)
                 .directory(ngrokBinary.getParent().toFile());
 
@@ -292,7 +307,6 @@ public class NgrokDevModeListener implements DevModeListener {
         try {
             ngrokProcess = processBuilder.start();
             try {
-                // TODO: we should probably tail the logs instead of waiting
                 Thread.sleep(2_000);
             } catch (InterruptedException ignored) {
             }
