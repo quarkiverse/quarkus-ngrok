@@ -80,6 +80,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "FroMage",
+      "name": "Stéphane Épardaud",
+      "avatar_url": "https://avatars.githubusercontent.com/u/179265?v=4",
+      "profile": "http://stephane.epardaud.fr",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
