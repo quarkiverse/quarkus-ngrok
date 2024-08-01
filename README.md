@@ -37,7 +37,7 @@ quarkus ext add io.quarkiverse.ngrok:quarkus-ngrok
 
 ## Usage
 
-1. Get a [ngrok auth token](https://ngrok.com/docs/getting-started/#step-2-connect-your-account) and configure it using ngrok or set it via `quarkus.ngrok.authtoken`
+1. Get a [ngrok auth token](https://ngrok.com/docs/getting-started/#step-2-connect-your-account) and configure it using ngrok or set it via `quarkus.ngrok.auth-token`
 
 2. A short while after the application has started, you should see something in the application logs like:
 
