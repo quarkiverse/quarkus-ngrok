@@ -2,84 +2,78 @@ package io.quarkiverse.ngrok.runtime;
 
 import java.util.Optional;
 
-import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
+import io.smallrye.config.ConfigMapping;
+import io.smallrye.config.WithDefault;
 
 /**
  * Configuration related to <a href="https://ngrok.com">ngrok</a>.
  *
  * These configuration values only apply to dev-mode.
  */
+@ConfigMapping(prefix = "quarkus.ngrok")
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
-public class NgrokConfig {
+public interface NgrokConfig {
 
     /**
      * Whether ngrok should be started when Quarkus dev-mode is launched.
      */
-    @ConfigItem(defaultValue = "true")
-    public boolean enabled;
+    @WithDefault("true")
+    boolean enabled();
 
     /**
-     * The directory into which to save the ngrok binary if it doesn't exist
+     * The directory into which to save the ngrok binary if it doesn't exist.
      */
-    @ConfigItem(defaultValue = "${user.home}/.quarkus/ngrok")
-    public String directory;
+    @WithDefault("${user.home}/.quarkus/ngrok")
+    String directory();
 
     /**
      * Specify a download URL where the ngrok distribution will be obtained from.
      *
-     * If not set, the platform default will be used
+     * If not set, the platform default will be used.
      */
-    @ConfigItem
-    public Optional<String> downloadURL;
+    Optional<String> downloadURL();
 
     /**
-     * The authentication token used to authenticate this client when it connects to the ngrok.com service
+     * The authentication token used to authenticate this client when it connects to the ngrok.com service.
      */
-    @ConfigItem
-    public Optional<String> authToken;
+    Optional<String> authToken();
 
     /**
-     * The region where the ngrok agent will connect to host its tunnels
+     * The region where the ngrok agent will connect to host its tunnels.
      */
-    @ConfigItem
-    public Optional<Region> region;
+    Optional<Region> region();
 
     /**
-     * The port where ngrok will be serving the local web interface and api
+     * The port where ngrok will be serving the local web interface and API.
      */
-    @ConfigItem
-    public Optional<Integer> port;
+    Optional<Integer> port();
 
     /**
      * The domain or hostname to use instead of the one ngrok generates.
      * See https://ngrok.com/blog-post/free-static-domains-ngrok-users
      */
-    @ConfigItem
-    public Optional<String> domain;
+    Optional<String> domain();
 
     /**
      * Name of the tunnel to start from ngrok default config instead of Quarkus configuration. Useful to use extended ngrok
      * configuration.
      */
-    @ConfigItem
-    public Optional<String> tunnelName;
+    Optional<String> tunnelName();
 
     /**
      * API key for ngrok if you need to perform any API operations such as delete-certificate-management-policy.
      */
-    @ConfigItem
-    public Optional<String> apiKey;
+    Optional<String> apiKey();
 
     /**
      * Reserved domain unique identifier for revoking certificate upon startup. Example: 'rd_2hrGw0rqFLOm9pcXf4dlbdNfrus'
      * If this value is not null the certificate will be revoked upon dev service startup.
      */
-    @ConfigItem
-    public Optional<String> deleteCertificateDomainId;
+    Optional<String> deleteCertificateDomainId();
 
-    public enum Region {
+    enum Region {
         United_States("us"),
         Europe("eu"),
         Asia_Pacific("ap"),
