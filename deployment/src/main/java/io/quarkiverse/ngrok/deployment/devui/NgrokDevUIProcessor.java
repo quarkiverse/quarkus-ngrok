@@ -29,7 +29,7 @@ public class NgrokDevUIProcessor {
         cardPageBuildItemBuildProducer.produce(card);
     }
 
-    @BuildStep(onlyIf = IsDevelopment.class)
+    @BuildStep
     JsonRPCProvidersBuildItem createJsonRPCServiceForCache() {
         return new JsonRPCProvidersBuildItem(NgrokJsonRPCService.class);
     }
