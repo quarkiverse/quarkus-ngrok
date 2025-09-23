@@ -16,14 +16,12 @@ env:
   # Repo specific setting #
   #########################
 
-  ECOSYSTEM_CI_REPO_PATH: quarkus-ngrok
+  ECOSYSTEM_CI_REPO_PATH: quarkiverse-ngrok
 
 jobs:
   build:
     name: "Build against latest Quarkus snapshot"
     runs-on: ubuntu-latest
-    # Allow <ADMIN> to manually launch the ecosystem CI in addition to the bots
-    if: github.actor == 'quarkusbot' || github.actor == 'quarkiversebot' || github.actor == '<ADMIN>'
 
     steps:
       - name: Set up Java
