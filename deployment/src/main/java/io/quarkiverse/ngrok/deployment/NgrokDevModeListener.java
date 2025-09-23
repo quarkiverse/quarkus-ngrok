@@ -24,7 +24,8 @@ import io.quarkiverse.ngrok.runtime.NgrokConfig;
 import io.quarkus.bootstrap.app.RunningQuarkusApplication;
 import io.quarkus.deployment.dev.DevModeListener;
 import io.quarkus.fs.util.ZipUtils;
-import io.quarkus.utilities.OS;
+import io.smallrye.common.cpu.CPU;
+import io.smallrye.common.os.OS;
 
 public class NgrokDevModeListener implements DevModeListener {
 
@@ -67,8 +68,8 @@ public class NgrokDevModeListener implements DevModeListener {
             Files.createDirectories(ngrokDir);
         }
 
-        var os = OS.determineOS();
-        var architecture = OS.getArchitecture();
+        var os = OS.current();
+        var architecture = CPU.host();
         var downloadURL = determineDownloadURL(runner.getConfigValue("quarkus.ngrok.download-url", String.class), os,
                 architecture);
 
@@ -135,12 +136,12 @@ public class NgrokDevModeListener implements DevModeListener {
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private String determineDownloadURL(Optional<String> customURL, OS os, String architecture) {
+    private String determineDownloadURL(Optional<String> customURL, OS os, CPU architecture) {
         return customURL.orElseGet(() -> createDownloadURL(os, architecture));
 
     }
 
-    private String createDownloadURL(OS os, String architecture) {
+    private String createDownloadURL(OS os, CPU architecture) {
         return String.format("https://bin.equinox.io/c/%s/ngrok-stable-%s-%s.zip", VERSION_STRING,
                 determineOSString(os), determineArchString(architecture));
     }
@@ -164,11 +165,11 @@ public class NgrokDevModeListener implements DevModeListener {
         };
     }
 
-    private String determineArchString(String architecture) {
+    private String determineArchString(CPU architecture) {
         return switch (architecture) {
-            case "x86_64" -> "amd64";
-            case "x86_32" -> "386";
-            case "aarch_64" -> "arm64";
+            case x64 -> "amd64";
+            case x86 -> "386";
+            case aarch64 -> "arm64";
             default -> throw new RuntimeException("Unsupported architecture '" + architecture + "'");
         };
     }
@@ -267,7 +268,7 @@ public class NgrokDevModeListener implements DevModeListener {
                 Files.writeString(configFile, sb.toString());
 
                 configs = configFile.toAbsolutePath().toString();
-                Path defaultConfig = determineDefaultConfigLocation(OS.determineOS());
+                Path defaultConfig = determineDefaultConfigLocation(OS.current());
                 if (Files.exists(defaultConfig)) {
                     // last one wins
                     configs = defaultConfig.toAbsolutePath() + "," + configs;
