@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>quarkus-ngrok-docs</artifactId>
-    <name>Quarkus ngrok - Documentation</name>
+    <name>Quarkus - Ngrok - Documentation</name>
 
     <dependencies>
         <!-- Make sure the doc is built after the other artifacts -->
