@@ -48,6 +48,16 @@ The application can be accessed publicly over the internet using: 'http://4f59-6
 
 For further instructions and tips to run using stable domains and additional config see https://docs.quarkiverse.io/quarkus-ngrok/dev/
 
+## Compatibility
+
+| Ngrok version | Quarkus version | Branch      |
+| ------------- | --------------- | ----------- |
+| 0.3.x         | 2.x             | `1.x`       |
+| 1.9.x         | 3.40.1+         | `quarkus-3` |
+| 2.x           | 4.0.0.Beta1+    | `main`      |
+
+2.x targets Quarkus 4 and requires JDK 21. If you are still on Quarkus 3, stay on 1.9.x, which is maintained from the `quarkus-3` branch.
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
